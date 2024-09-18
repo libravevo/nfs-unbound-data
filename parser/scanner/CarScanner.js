@@ -9,8 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -41,6 +41,7 @@ var Log_js_1 = require("../util/Log.js");
 var Files_js_1 = require("../util/Files.js");
 var CarTemplate_js_1 = require("../data/CarTemplate.js");
 var Car_js_1 = require("../data/Car.js");
+var nodePath = require("path");
 var fs = require("fs");
 var xml2js = require("xml2js");
 var util = require("util");
@@ -49,15 +50,16 @@ var CarScanner = /** @class */ (function () {
     }
     CarScanner.scan = function (context) {
         return __awaiter(this, void 0, void 0, function () {
-            var path, fileList, filesByDir, _loop_1, _i, _a, dir, _b, _c, _d, _e, dir, template, _f, _g, file, data, xmlObj, car;
+            var separator, path, fileList, filesByDir, _loop_1, _i, _a, dir, _b, _c, _d, _e, dir, template, _f, _g, file, data, xmlObj, car;
             return __generator(this, function (_h) {
                 switch (_h.label) {
                     case 0:
+                        separator = nodePath.sep;
                         path = context.args.dataPath;
                         // Locate car XMLs and directories, with some filtering
                         Log_js_1.log.info("CarScanner :: Looking for files");
                         fileList = (0, Files_js_1.walkDir)(path, function (it) {
-                            return /^(cop)?car_[0-9a-z]+_[0-9a-z]+_\d{4}(_(cop|icon))?\.xml$/gmi.test(it);
+                            return /^(cop|playercop)?car_[0-9a-z]+_[0-9a-z]+_\d{4}(_(cop|icon))?\.xml$/gmi.test(it);
                         }, function (it) {
                             // filter to items dir, ignore secondhand vehicles, contains nothing of relevance to this tool
                             return it.includes("items") && !it.includes("secondhand_vehicles");
@@ -88,7 +90,7 @@ var CarScanner = /** @class */ (function () {
                         _d = _c[_e];
                         if (!(_d in _b)) return [3 /*break*/, 6];
                         dir = _d;
-                        template = new CarTemplate_js_1.CarTemplate(dir, dir.split("/").at(-1).split("_")[1], dir.split("/").at(-1).split("_")[2], +dir.split("/").at(-1).split("_")[3]);
+                        template = new CarTemplate_js_1.CarTemplate(dir, dir.split(separator).at(-1).split("_")[1], dir.split(separator).at(-1).split("_")[2], +dir.split(separator).at(-1).split("_")[3]);
                         _f = 0, _g = filesByDir[dir];
                         _h.label = 2;
                     case 2:
@@ -107,7 +109,7 @@ var CarScanner = /** @class */ (function () {
                         return [4 /*yield*/, xml2js.parseStringPromise(data)];
                     case 3:
                         xmlObj = _h.sent();
-                        car = new Car_js_1.Car(file, Number(xmlObj.RaceVehicleItemData.Id[0].ItemDataId[0].Id[0]), file.toLowerCase().split("/").at(-1).split("_")[2] + (file.toLowerCase().includes("cop") ? "_cop" : ""), file.toLowerCase().split("/").at(-1).split("_")[3]);
+                        car = new Car_js_1.Car(file, Number(xmlObj.RaceVehicleItemData.Id[0].ItemDataId[0].Id[0]), file.toLowerCase().split(separator).at(-1).split("_")[2] + (file.toLowerCase().includes("cop") ? "_cop" : ""), file.toLowerCase().split(separator).at(-1).split("_")[3]);
                         template.cars.push(car);
                         car.template = template;
                         _h.label = 4;

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isDir = exports.walkDir = void 0;
+exports.walkDir = walkDir;
+exports.isDir = isDir;
 var fs_1 = require("fs");
 var fs_2 = require("fs");
 var path_1 = require("path");
@@ -31,7 +32,6 @@ function walkDir(root, fileFilter, dirFilter, __result) {
     });
     return __result;
 }
-exports.walkDir = walkDir;
 /**
  * Checks whether a path is a directory
  *
@@ -42,4 +42,3 @@ exports.walkDir = walkDir;
 function isDir(path) {
     return (0, fs_2.lstatSync)(path).isDirectory();
 }
-exports.isDir = isDir;

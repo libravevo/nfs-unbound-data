@@ -5,6 +5,7 @@ import { Context } from "../Context.js"
 
 import { log     } from "../util/Log.js"
 import { walkDir } from "../util/Files.js"
+import * as nodePath from 'path';
 
 let fs     = require("fs")
 let xml2js = require("xml2js")
@@ -23,6 +24,7 @@ export class CarPartScanner {
         path    : string,
         context : Context
     ): Promise<Context> {
+        const separator = nodePath.sep;
         // Locate car part XMLs and directories, with some filtering
         log.info("CarPartScanner :: Looking for item files")
         let fileList = walkDir(
@@ -70,7 +72,7 @@ export class CarPartScanner {
                 }).length > 0
             }
             catch {
-                log.warn(`CarPartScanner :: Unable to determine ignoreui flag for ${file.split("/").at(-1)}`)
+                log.warn(`CarPartScanner :: Unable to determine ignoreui flag for ${file.split(separator).at(-1)}`)
             }
 
             // Other flags
@@ -83,7 +85,7 @@ export class CarPartScanner {
             // Learn what a consistency is, thank you very much
             // (And a case-sensitive filesystem)
             let typeString = ""
-            if (file.toLowerCase().split("/").at(-1).includes("shared_")) {
+            if (file.toLowerCase().split(separator).at(-1).includes("shared_")) {
                 // Shared parts have their type in a different spot of the filename
                 if (
                     file.toLowerCase().endsWith("_r.xml")
@@ -95,13 +97,13 @@ export class CarPartScanner {
                 ) {
                     // Most need rear/front information appended from the end of the filename too
                     typeString = `${
-                        file.split("/").at(-1).split("_")[1]
+                        file.split(separator).at(-1).split("_")[1]
                     }${
-                        file.split("/").at(-1).split("_").at(-1).split(".")[0]
+                        file.split(separator).at(-1).split("_").at(-1).split(".")[0]
                     }`
                 }
                 else {
-                    typeString = file.split("/").at(-1).split("_")[1]
+                    typeString = file.split(separator).at(-1).split("_")[1]
                 }
             }
             else {
@@ -111,7 +113,7 @@ export class CarPartScanner {
             part.setTypeAsString(typeString)
 
             if (part.type == PartType.INTERNAL_UNKNOWN) { 
-                log.warn(`CarPartScanner :: Unable to determine part type (${typeString.toLowerCase()}) for ${file.split("/").at(-1)} (${part.id})`)
+                log.warn(`CarPartScanner :: Unable to determine part type (${typeString.toLowerCase()}) for ${file.split(separator).at(-1)} (${part.id})`)
             }
             
             context.carVisualParts.push(part)

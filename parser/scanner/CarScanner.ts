@@ -5,6 +5,7 @@ import { CarTemplate } from "../data/CarTemplate.js"
 import { Car         } from "../data/Car.js"
 
 import { Context } from "../Context.js"
+import * as nodePath from 'path';
 
 let fs     = require("fs")
 let xml2js = require("xml2js")
@@ -14,13 +15,14 @@ export class CarScanner {
     static async scan(
         context : Context
     ): Promise<Context> {
+        const separator = nodePath.sep;
         let path = context.args.dataPath
         // Locate car XMLs and directories, with some filtering
         log.info("CarScanner :: Looking for files")
         let fileList = walkDir(
             path,
             (it : string): boolean => {
-                return /^(cop)?car_[0-9a-z]+_[0-9a-z]+_\d{4}(_(cop|icon))?\.xml$/gmi.test(it)
+                return /^(cop|playercop)?car_[0-9a-z]+_[0-9a-z]+_\d{4}(_(cop|icon))?\.xml$/gmi.test(it)
             },
             (it : string): boolean => {
                 // filter to items dir, ignore secondhand vehicles, contains nothing of relevance to this tool
@@ -47,9 +49,9 @@ export class CarScanner {
             // Carve out brand, model, and year, and make a CarTemplate
             let template = new CarTemplate(
                 dir,
-                dir.split("/").at(-1)!.split("_")[1],
-                dir.split("/").at(-1)!.split("_")[2],
-                +dir.split("/").at(-1)!.split("_")[3]
+                dir.split(separator).at(-1)!.split("_")[1],
+                dir.split(separator).at(-1)!.split("_")[2],
+                +dir.split(separator).at(-1)!.split("_")[3]
             )
 
             // Fill in car variants
@@ -66,8 +68,8 @@ export class CarScanner {
                 let car = new Car(
                     file,
                     Number(xmlObj.RaceVehicleItemData.Id[0].ItemDataId[0].Id[0]),
-                    file.toLowerCase().split("/").at(-1)!.split("_")[2] + (file.toLowerCase().includes("cop") ? "_cop" : ""),
-                    file.toLowerCase().split("/").at(-1)!.split("_")[3]
+                    file.toLowerCase().split(separator).at(-1)!.split("_")[2] + (file.toLowerCase().includes("cop") ? "_cop" : ""),
+                    file.toLowerCase().split(separator).at(-1)!.split("_")[3]
                 )
 
                 template.cars.push(car)

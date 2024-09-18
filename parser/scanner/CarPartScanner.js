@@ -9,8 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -41,6 +41,7 @@ var CarVisualPart_js_1 = require("../data/CarVisualPart.js");
 var CarVisualPart_js_2 = require("../data/CarVisualPart.js");
 var Log_js_1 = require("../util/Log.js");
 var Files_js_1 = require("../util/Files.js");
+var nodePath = require("path");
 var fs = require("fs");
 var xml2js = require("xml2js");
 var util = require("util");
@@ -58,10 +59,11 @@ var CarPartScanner = /** @class */ (function () {
     };
     CarPartScanner.scanItems = function (path, context) {
         return __awaiter(this, void 0, void 0, function () {
-            var fileList, _i, _a, file, data, xmlObj, itemData, part, typeString;
+            var separator, fileList, _i, _a, file, data, xmlObj, itemData, part, typeString;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
+                        separator = nodePath.sep;
                         // Locate car part XMLs and directories, with some filtering
                         Log_js_1.log.info("CarPartScanner :: Looking for item files");
                         fileList = (0, Files_js_1.walkDir)(path, function (it) {
@@ -108,13 +110,13 @@ var CarPartScanner = /** @class */ (function () {
                             }).length > 0;
                         }
                         catch (_c) {
-                            Log_js_1.log.warn("CarPartScanner :: Unable to determine ignoreui flag for ".concat(file.split("/").at(-1)));
+                            Log_js_1.log.warn("CarPartScanner :: Unable to determine ignoreui flag for ".concat(file.split(separator).at(-1)));
                         }
                         // Other flags
                         part.flags.purchasable = (itemData.Purchasable[0] == "True" ? true : false);
                         part.flags.shared = file.includes("shared_");
                         typeString = "";
-                        if (file.toLowerCase().split("/").at(-1).includes("shared_")) {
+                        if (file.toLowerCase().split(separator).at(-1).includes("shared_")) {
                             // Shared parts have their type in a different spot of the filename
                             if (file.toLowerCase().endsWith("_r.xml")
                                 || file.toLowerCase().endsWith("_f.xml")
@@ -123,10 +125,10 @@ var CarPartScanner = /** @class */ (function () {
                                 || file.toLowerCase().endsWith("_fl.xml")
                                 || file.toLowerCase().endsWith("_rl.xml")) {
                                 // Most need rear/front information appended from the end of the filename too
-                                typeString = "".concat(file.split("/").at(-1).split("_")[1]).concat(file.split("/").at(-1).split("_").at(-1).split(".")[0]);
+                                typeString = "".concat(file.split(separator).at(-1).split("_")[1]).concat(file.split(separator).at(-1).split("_").at(-1).split(".")[0]);
                             }
                             else {
-                                typeString = file.split("/").at(-1).split("_")[1];
+                                typeString = file.split(separator).at(-1).split("_")[1];
                             }
                         }
                         else {
@@ -135,7 +137,7 @@ var CarPartScanner = /** @class */ (function () {
                         }
                         part.setTypeAsString(typeString);
                         if (part.type == CarVisualPart_js_2.PartType.INTERNAL_UNKNOWN) {
-                            Log_js_1.log.warn("CarPartScanner :: Unable to determine part type (".concat(typeString.toLowerCase(), ") for ").concat(file.split("/").at(-1), " (").concat(part.id, ")"));
+                            Log_js_1.log.warn("CarPartScanner :: Unable to determine part type (".concat(typeString.toLowerCase(), ") for ").concat(file.split(separator).at(-1), " (").concat(part.id, ")"));
                         }
                         context.carVisualParts.push(part);
                         _b.label = 3;
