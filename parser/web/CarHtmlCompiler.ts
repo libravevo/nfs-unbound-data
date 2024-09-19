@@ -5,6 +5,7 @@ import { CarVisualPart } from "../data/CarVisualPart.js"
 import { Car           } from "../data/Car.js"
 
 import { Context } from "../Context.js"
+import * as nodePath from 'path';
 
 let fs   = require("fs")
 let path = require("path")
@@ -13,6 +14,7 @@ const eta = new Eta({ views : path.join(__dirname, "templates"), autoTrim: ["slu
 
 export class CarHtmlCompiler {
     static compile(context: Context): Context {
+        const separator = nodePath.sep;
         log.info("CarHtmlCompiler :: Building HTML documents for cars")
 
         for (let template of context.carTemplates) {
@@ -68,7 +70,8 @@ export class CarHtmlCompiler {
                     headers : types,
                     sets    : sets,
                     parts   : partsBySet,
-                    scopes  : template.cars
+                    scopes  : template.cars,
+                    manufacturer : template.getName().split(separator).at(-1)!.split("_")[0]
                 })
             })
 

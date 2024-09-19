@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CarHtmlCompiler = void 0;
 var Log_js_1 = require("../util/Log.js");
 var eta_1 = require("eta");
+var nodePath = require("path");
 var fs = require("fs");
 var path = require("path");
 var eta = new eta_1.Eta({ views: path.join(__dirname, "templates"), autoTrim: ["slurp", false] });
@@ -10,6 +11,7 @@ var CarHtmlCompiler = /** @class */ (function () {
     function CarHtmlCompiler() {
     }
     CarHtmlCompiler.compile = function (context) {
+        var separator = nodePath.sep;
         Log_js_1.log.info("CarHtmlCompiler :: Building HTML documents for cars");
         var _loop_1 = function (template) {
             var types = [];
@@ -70,7 +72,8 @@ var CarHtmlCompiler = /** @class */ (function () {
                     headers: types,
                     sets: sets,
                     parts: partsBySet,
-                    scopes: template.cars
+                    scopes: template.cars,
+                    manufacturer: template.getName().split(separator).at(-1).split("_")[0]
                 })
             });
             // Write table HTML files

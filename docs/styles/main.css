@@ -28,6 +28,11 @@ body {
     overflow : hidden;
 }
 
+.table-backout {
+    color: inherit;
+    /*text-decoration: inherit;*/
+}
+
 .main-table > tbody > tr > td,
 .main-table > tbody > tr > th
 {
@@ -182,7 +187,7 @@ body {
 
 .table-options * {
     margin-left  : 3.5pt;
-    margin-right : 10pt;
+    margin-right : 15pt;
 }
 
 .table-options div {

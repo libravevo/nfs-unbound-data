@@ -1,6 +1,6 @@
 <div class="groupedList">
     <%  for (let item in it.itemGroups) { %>
-        <div class=group>
+        <section id=<%= item %> class=group>
             <h2 class="title"><%= item %> </h2>
             <div class="rows">
                 <% for (let template of it.itemGroups[item]) { %>
@@ -14,6 +14,6 @@
                     </a>
                 <% } %>
             </div>
-        </div>
+        </section>
     <% } %>
 </div>
