@@ -166,6 +166,59 @@ var CarVisualPart = /** @class */ (function () {
                 this.type = PartType.CHASSIS;
                 break;
             }
+            // Added
+            case "suspension": {
+                this.type = PartType.SUSPENSION;
+                break;
+            }
+            case "ledboard": {
+                this.type = PartType.LEDBOARD;
+                break;
+            }
+            case "rooflight": {
+                this.type = PartType.ROOFLIGHT;
+                break;
+            }
+            case "fenderschasf": {
+                this.type = PartType.FENDERSCHASF;
+                break;
+            }
+            case "fenderschasr": {
+                this.type = PartType.FENDERSCHASR;
+                break;
+            }
+            case "fenderschassisf": {
+                this.type = PartType.FENDERCHASSISF;
+                break;
+            }
+            case "fenderschassisr": {
+                this.type = PartType.FENDERCHASSISR;
+                break;
+            }
+            case "mirrorbasel": {
+                this.type = PartType.MIRRORBASE1;
+                break;
+            }
+            case "bumperrdiffuser": {
+                this.type = PartType.BUMDERRDIFFUSER;
+                break;
+            }
+            case "rollcage": {
+                this.type = PartType.ROLLCAGE;
+                break;
+            }
+            case "fendermirrorbasel": {
+                this.type = PartType.FENDERMIRRORBASE1;
+                break;
+            }
+            case "mirrorbaser": {
+                this.type = PartType.MIRRORBASER;
+                break;
+            }
+            case "roofvanity": {
+                this.type = PartType.ROOFVANITY;
+                break;
+            }
             default: {
                 this.type = PartType.INTERNAL_UNKNOWN;
             }
@@ -208,4 +261,17 @@ var PartType;
     PartType["LIGHTBAR"] = "Auxiliary Light";
     PartType["CHASSIS"] = "Chassis";
     PartType["INTERNAL_UNKNOWN"] = "Internal or Unknown";
+    PartType["SUSPENSION"] = "*Suspension";
+    PartType["LEDBOARD"] = "*Led Board";
+    PartType["ROOFLIGHT"] = "*Roof Light";
+    PartType["FENDERSCHASF"] = "*Fender ? front";
+    PartType["FENDERSCHASR"] = "*Fender ? right";
+    PartType["FENDERCHASSISF"] = "*Fender ? front";
+    PartType["FENDERCHASSISR"] = "*Fender ? right";
+    PartType["MIRRORBASE1"] = "*mirrorbasel ?";
+    PartType["BUMDERRDIFFUSER"] = "*bumperrdiffuser ?";
+    PartType["ROLLCAGE"] = "*Rollcage";
+    PartType["FENDERMIRRORBASE1"] = "*fendermirrorbasel ?";
+    PartType["MIRRORBASER"] = "*mirrorbaser ?";
+    PartType["ROOFVANITY"] = "*roofvanity";
 })(PartType || (exports.PartType = PartType = {}));

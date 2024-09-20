@@ -84,6 +84,21 @@ export class CarVisualPart {
             case "engine"       : { this.type = PartType.ENGINE; break }
             case "chassis"      : { this.type = PartType.CHASSIS; break }
 
+            // Added
+            case "suspension"   : { this.type = PartType.SUSPENSION; break }
+            case "ledboard"   : { this.type = PartType.LEDBOARD; break }
+            case "rooflight"   : { this.type = PartType.ROOFLIGHT; break }
+            case "fenderschasf"   : { this.type = PartType.FENDERSCHASF; break }
+            case "fenderschasr"   : { this.type = PartType.FENDERSCHASR; break }
+            case "fenderschassisf"   : { this.type = PartType.FENDERCHASSISF; break }
+            case "fenderschassisr"   : { this.type = PartType.FENDERCHASSISR; break }
+            case "mirrorbasel"   : { this.type = PartType.MIRRORBASE1; break }
+            case "bumperrdiffuser"   : { this.type = PartType.BUMDERRDIFFUSER; break }
+            case "rollcage"   : { this.type = PartType.ROLLCAGE; break }
+            case "fendermirrorbasel"   : { this.type = PartType.FENDERMIRRORBASE1; break }
+            case "mirrorbaser"   : { this.type = PartType.MIRRORBASER; break }
+            case "roofvanity"   : { this.type = PartType.ROOFVANITY; break }
+
             default : { this.type = PartType.INTERNAL_UNKNOWN; }
         }
     }
@@ -121,5 +136,19 @@ export enum PartType {
     TRIM                = "Side Trim",
     LIGHTBAR            = "Auxiliary Light",
     CHASSIS             = "Chassis",
-    INTERNAL_UNKNOWN    = "Internal or Unknown"
+    INTERNAL_UNKNOWN    = "Internal or Unknown",
+
+    SUSPENSION          = "*Suspension",
+    LEDBOARD            = "*Led Board",
+    ROOFLIGHT           = "*Roof Light",
+    FENDERSCHASF        = "*Fender ? front", // laferrari
+    FENDERSCHASR        = "*Fender ? right", // laferrari
+    FENDERCHASSISF      = "*Fender ? front", // MazdaRx8SpiritR
+    FENDERCHASSISR      = "*Fender ? right", // MazdaRx8SpiritR
+    MIRRORBASE1         = "*mirrorbasel ?", // MazdaRx8SpiritR
+    BUMDERRDIFFUSER     = "*bumperrdiffuser ?", // evoX
+    ROLLCAGE            = "*Rollcage", // pontiac transam
+    FENDERMIRRORBASE1   = "*fendermirrorbasel ?", // imprezaWrxSti
+    MIRRORBASER         = "*mirrorbaser ?", // imprezaWrxSti
+    ROOFVANITY          = "*roofvanity", // shared set
 }
