@@ -9,6 +9,12 @@ export class CarTemplate {
                 }
     cars        : Car[]
     visualParts : CarVisualPart[]
+    scopesLength : number
+    totalScopes  : number
+    purchaseLength : number
+    totalPurchase : number
+    uiLength : number
+    totalUi : number = 0
 
     constructor(
         public path      : string,
@@ -24,6 +30,12 @@ export class CarTemplate {
         }
         this.cars        = []
         this.visualParts = []
+        this.scopesLength = 0;
+        this.totalScopes = 0;
+        this.purchaseLength = 0;
+        this.totalPurchase = 0;
+        this.uiLength = 0;
+        this.totalUi = 0;
     }
 
     getName(): string {

@@ -35,27 +35,40 @@
 }
 
 .groupedList > .group > .rows {
-    display : flex;
-
-    flex-direction : column;
+	display: flex;
+	flex-direction: column;
 }
 
 .groupedList > .group > .rows > a {
-    display : flex;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-left: 5pt;
+	color: var(--col-fg);
+	text-decoration: none;
+	border-top: 1px solid var(--col-bg-dark);
+}
+
+.groupedList > .group > a {
+    text-decoration : none;
+}
+
+
+
+.groupedList > .group > a > .rows {
+    display : grid;
 
     align-items     : center;
-    justify-content : space-between;
-
+    grid-template-columns: 0.25fr 0.15fr 0.15fr 0.15fr 1fr;
+    
     padding-left : 5pt;
 
     color : var(--col-fg);
 
-    text-decoration : none;
-
     border-top : 1px solid var(--col-bg-dark);
 }
 
-.groupedList > .group > .rows > a > * {
+.groupedList > .group >  a > .rows > * {
     display : inline;
 }
 
@@ -63,7 +76,12 @@
     background : var(--col-bg-lighter);
 }
 
-.groupedList > .group > .rows > a > .tags > .tag {
+
+.groupedList > .group > a > .rows > .tags {
+    margin-left:auto;
+}
+
+.groupedList > .group > a > .rows > .tags > .tag {
     display : inline;
 
     padding-left  : 5pt;
@@ -85,7 +103,7 @@
     color : var(--col-fg-dark);
 }
 
-.groupedList > .group > .rows > a > .tags > .tag.cop {
+.groupedList > .group > a > .rows > .tags > .tag.cop {
     background : linear-gradient(100deg,
         transparent                                    2%,
         #FF355E                                        5%,

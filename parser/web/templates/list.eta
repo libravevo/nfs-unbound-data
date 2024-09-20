@@ -2,18 +2,44 @@
     <%  for (let item in it.itemGroups) { %>
         <section id=<%= item %> class=group>
             <h2 class="title"><%= item %> </h2>
-            <div class="rows">
                 <% for (let template of it.itemGroups[item]) { %>
                     <a href="cars/<%= `${template.getName()}.html` %>">
-                        <p><%= `${template.name.year}` %><b><%= ` ${template.name.model}` %></b></p>
-                        <span class="tags">
-                            <% for (let car of template.cars) { %>
-                                <p class="tag <%= car.name.model.endsWith("_cop") ? " cop" : "" %>"><%= car.name.model %></p>
-                            <% } %>
-                        </span>
+                        <div class="rows">
+                            <p><%= `${template.name.year}` %><b><%= ` ${template.name.model}` %></b></p>
+                            <p class="field highlight label
+                                <% if (template.scopesLength < template.totalScopes ) { %>
+                                    <%= " neutral" %>
+                                <% } %>
+                                <% else { %>
+                                    <%= " positive" %>
+                                <% } %>
+                            ">Scopes:<b> <%= `${template.scopesLength}` %>/<%= `${template.totalScopes}` %></b></p> 
+
+                            <p class="field highlight label
+                                <% if (template.purchaseLength < template.totalPurchase ) { %>
+                                    <%= " neutral" %>
+                                <% } %>
+                                <% else { %>
+                                    <%= " positive" %>
+                                <% } %>
+                            ">Purchaseable:<b> <%= `${template.purchaseLength}` %>/<%= `${template.totalPurchase}` %></b></p> 
+
+                            <p class="field highlight label
+                                <% if (template.uiLength > 0 ) { %>
+                                    <%= " neutral" %>
+                                <% } %>
+                                <% else { %>
+                                    <%= " positive" %>
+                                <% } %>
+                            ">IgnoreUI:<b> <%= `${template.uiLength}` %>/<%= `${template.totalUi}` %></b></p> 
+                            <span class="tags">
+                                <% for (let car of template.cars) { %>
+                                    <p class="tag <%= car.name.model.endsWith("_cop") ? " cop" : "" %>"><%= car.name.model %></p>
+                                <% } %>
+                            </span>
+                        </div>
                     </a>
                 <% } %>
-            </div>
         </section>
     <% } %>
 </div>

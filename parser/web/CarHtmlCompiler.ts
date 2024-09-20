@@ -15,6 +15,15 @@ const eta = new Eta({ views : path.join(__dirname, "templates"), autoTrim: ["slu
 export class CarHtmlCompiler {
     static compile(context: Context): Context {
         const separator = nodePath.sep;
+
+        let carGroups = {}
+        for (let template of context.carTemplates) {
+            if (carGroups[template.name.brand] === undefined) {
+                carGroups[template.name.brand] = []
+            }
+            carGroups[template.name.brand].push(template)
+        }
+
         log.info("CarHtmlCompiler :: Building HTML documents for cars")
 
         for (let template of context.carTemplates) {
@@ -64,9 +73,25 @@ export class CarHtmlCompiler {
                 }
             }
 
+            for(let set of sets){
+                for(let part of partsBySet[set]){
+                    if(part != null) {
+                        template.scopesLength += part.scopes.length;
+                        part.totalScopes == 0 ? template.totalScopes += template.cars.length : template.totalScopes += part.totalScopes;
+
+                        if(part.flags.purchasable) template.purchaseLength++;
+                        template.totalPurchase++;
+
+                        if(part.flags.ignoreUI) template.uiLength++;
+                        template.totalUi++;
+                    }
+                }
+            }
+
             // Support backout with custom folders. e.g. specify the output folder as *path*\*out*\custom, drop the custom folder in the docs dir and add the entry to index.html
+            // TODO: assuming output folder is named "out"
             // TODO: fix output folder must contain the "cars" folder
-            let dir = context.args.outPath.split(separator).at(-1) == "nfs-unbound-data" ? "" : "/" + context.args.outPath.split(separator).at(-1);
+            let dir = context.args.outPath.split(separator).at(-1) == "out" ? "" : "/" + context.args.outPath.split(separator).at(-1);
             let current = "/nfs-unbound-data" + dir;
 
             // Render main table with Eta
@@ -92,14 +117,6 @@ export class CarHtmlCompiler {
         }
 
         log.info("CarHtmlCompiler :: Generating listing HTML")
-
-        let carGroups = {}
-        for (let template of context.carTemplates) {
-            if (carGroups[template.name.brand] === undefined) {
-                carGroups[template.name.brand] = []
-            }
-            carGroups[template.name.brand].push(template)
-        }
 
         let document = eta.render("./root", {
             body : eta.render("./list", {

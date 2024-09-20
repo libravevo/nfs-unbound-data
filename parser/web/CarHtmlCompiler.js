@@ -12,6 +12,14 @@ var CarHtmlCompiler = /** @class */ (function () {
     }
     CarHtmlCompiler.compile = function (context) {
         var separator = nodePath.sep;
+        var carGroups = {};
+        for (var _i = 0, _a = context.carTemplates; _i < _a.length; _i++) {
+            var template = _a[_i];
+            if (carGroups[template.name.brand] === undefined) {
+                carGroups[template.name.brand] = [];
+            }
+            carGroups[template.name.brand].push(template);
+        }
         Log_js_1.log.info("CarHtmlCompiler :: Building HTML documents for cars");
         var _loop_1 = function (template) {
             var types = [];
@@ -36,8 +44,8 @@ var CarHtmlCompiler = /** @class */ (function () {
                         return (it.set.toLowerCase() == set && it.type == type);
                     })[0]);
                 };
-                for (var _g = 0, types_1 = types; _g < types_1.length; _g++) {
-                    var type = types_1[_g];
+                for (var _k = 0, types_1 = types; _k < types_1.length; _k++) {
+                    var type = types_1[_k];
                     _loop_4(type);
                 }
             };
@@ -66,9 +74,26 @@ var CarHtmlCompiler = /** @class */ (function () {
                 var type = _f[_e];
                 _loop_3(type);
             }
+            for (var _g = 0, sets_2 = sets; _g < sets_2.length; _g++) {
+                var set = sets_2[_g];
+                for (var _h = 0, _j = partsBySet[set]; _h < _j.length; _h++) {
+                    var part = _j[_h];
+                    if (part != null) {
+                        template.scopesLength += part.scopes.length;
+                        part.totalScopes == 0 ? template.totalScopes += template.cars.length : template.totalScopes += part.totalScopes;
+                        if (part.flags.purchasable)
+                            template.purchaseLength++;
+                        template.totalPurchase++;
+                        if (part.flags.ignoreUI)
+                            template.uiLength++;
+                        template.totalUi++;
+                    }
+                }
+            }
             // Support backout with custom folders. e.g. specify the output folder as *path*\*out*\custom, drop the custom folder in the docs dir and add the entry to index.html
+            // TODO: assuming output folder is named "out"
             // TODO: fix output folder must contain the "cars" folder
-            var dir = context.args.outPath.split(separator).at(-1) == "nfs-unbound-data" ? "" : "/" + context.args.outPath.split(separator).at(-1);
+            var dir = context.args.outPath.split(separator).at(-1) == "out" ? "" : "/" + context.args.outPath.split(separator).at(-1);
             var current = "/nfs-unbound-data" + dir;
             // Render main table with Eta
             var document_1 = eta.render("./root", {
@@ -81,25 +106,16 @@ var CarHtmlCompiler = /** @class */ (function () {
                     path: current
                 })
             });
-            Log_js_1.log.info("LENGTH " + template.cars.length);
             // Write table HTML files
             var outFile = path.join(context.args.outPath, "cars/".concat(template.getName(), ".html"));
             Log_js_1.log.info("CarHtmlCompiler :: Writing ".concat(outFile));
             fs.writeFileSync(outFile, document_1, { flag: 'w' });
         };
-        for (var _i = 0, _a = context.carTemplates; _i < _a.length; _i++) {
-            var template = _a[_i];
+        for (var _b = 0, _c = context.carTemplates; _b < _c.length; _b++) {
+            var template = _c[_b];
             _loop_1(template);
         }
         Log_js_1.log.info("CarHtmlCompiler :: Generating listing HTML");
-        var carGroups = {};
-        for (var _b = 0, _c = context.carTemplates; _b < _c.length; _b++) {
-            var template = _c[_b];
-            if (carGroups[template.name.brand] === undefined) {
-                carGroups[template.name.brand] = [];
-            }
-            carGroups[template.name.brand].push(template);
-        }
         var document = eta.render("./root", {
             body: eta.render("./list", {
                 itemGroups: carGroups

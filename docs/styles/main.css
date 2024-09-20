@@ -6,6 +6,9 @@
     --col-fg         : #F7FAF7;
     --col-fg-dark    : #15171C;
     --col-accent     : #0BDA51;
+    --field-positive : #0BDA51;
+    --field-negative : #FF355E;
+    --field-neutral  : #FCC01E;
 }
 
 body {
@@ -152,16 +155,24 @@ body {
     border-radius : 3pt;
 }
 
+.field.highlight.label.positive {
+    color: var(--field-positive)
+}
+
+.field.highlight.label.neutral {
+    color: var(--field-neutral)
+}
+
 .subGrid .field.highlight.positive {
-    background : #0BDA51;
+    background : var(--field-positive);
 }
 
 .subGrid .field.highlight.negative {
-    background : #FF355E;
+    background : var(--field-negative);
 }
 
 .subGrid .field.highlight.neutral {
-    background : #FCC01E;
+    background : var(--field-neutral);
 }
 
 /* Options bar/header */
