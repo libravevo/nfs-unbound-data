@@ -66,6 +66,10 @@ var CarHtmlCompiler = /** @class */ (function () {
                 var type = _f[_e];
                 _loop_3(type);
             }
+            // Support backout with custom folders. e.g. specify the output folder as *path*\*out*\custom, drop the custom folder in the docs dir and add the entry to index.html
+            // TODO: fix output folder must contain the "cars" folder
+            var dir = context.args.outPath.split(separator).at(-1) == "nfs-unbound-data" ? "" : "/" + context.args.outPath.split(separator).at(-1);
+            var current = "/nfs-unbound-data" + dir;
             // Render main table with Eta
             var document_1 = eta.render("./root", {
                 body: eta.render("./carPartTable", {
@@ -73,9 +77,11 @@ var CarHtmlCompiler = /** @class */ (function () {
                     sets: sets,
                     parts: partsBySet,
                     scopes: template.cars,
-                    manufacturer: template.getName().split(separator).at(-1).split("_")[0]
+                    brand: template.name.brand,
+                    path: current
                 })
             });
+            Log_js_1.log.info("LENGTH " + template.cars.length);
             // Write table HTML files
             var outFile = path.join(context.args.outPath, "cars/".concat(template.getName(), ".html"));
             Log_js_1.log.info("CarHtmlCompiler :: Writing ".concat(outFile));

@@ -64,6 +64,11 @@ export class CarHtmlCompiler {
                 }
             }
 
+            // Support backout with custom folders. e.g. specify the output folder as *path*\*out*\custom, drop the custom folder in the docs dir and add the entry to index.html
+            // TODO: fix output folder must contain the "cars" folder
+            let dir = context.args.outPath.split(separator).at(-1) == "nfs-unbound-data" ? "" : "/" + context.args.outPath.split(separator).at(-1);
+            let current = "/nfs-unbound-data" + dir;
+
             // Render main table with Eta
             let document = eta.render("./root", {
                 body : eta.render("./carPartTable", {
@@ -71,7 +76,8 @@ export class CarHtmlCompiler {
                     sets    : sets,
                     parts   : partsBySet,
                     scopes  : template.cars,
-                    manufacturer : template.getName().split(separator).at(-1)!.split("_")[0]
+                    brand : template.name.brand,
+                    path: current
                 })
             })
 

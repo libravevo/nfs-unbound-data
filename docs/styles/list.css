@@ -95,4 +95,5 @@
         #286ACD                                       95%,
         transparent
     );
+    color : var(--col-fg);
 }
