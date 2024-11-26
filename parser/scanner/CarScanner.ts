@@ -22,13 +22,18 @@ export class CarScanner {
         let fileList = walkDir(
             path,
             (it : string): boolean => {
-                return /^(cop|playercop)?car_[0-9a-z]+_[0-9a-z]+_\d{4}(_(cop|icon))?\.xml$/gmi.test(it)
+                return /^(cop|playercop)?(car|bike)_[0-9a-z]+_[0-9a-z]+_\d{4}(_(cop|icon))?\.xml$/gmi.test(it)
             },
             (it : string): boolean => {
                 // filter to items dir, ignore secondhand vehicles, contains nothing of relevance to this tool
                 return it.includes("items") && !it.includes("secondhand_vehicles")
             }  
         )
+
+        fileList = {
+            dirs: fileList.dirs.map((dir: string) => dir.toLowerCase()),
+            files: fileList.files.map((file: string) => file.toLowerCase())
+        };
 
         log.info(`CarScanner :: Found ${fileList.files.length} car XMLs in ${fileList.dirs.length} directories`)
         log.info("CarScanner :: Sorting results")
